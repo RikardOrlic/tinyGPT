@@ -4,6 +4,10 @@ PyTorch implementation of GPT(Generative pretrained Transformer)
 
 A thank you to Andrej Karpathy and his great <a href="https://youtu.be/kCc8FmEb1nY">lecture.</a>
 
+Dependencies:
+
+- pytorch
+
 Sample of the generated text with a model trained on the tiny shakespeare dataset. The model was trained with the hyperparameters that are currently expressed in the main.py file.
 At 3000 iterations the train loss is 1.2054 and the validation loss is 1.5124. After 3000 iterations the model starts overfitting and the validation loss starts diverging.
 
