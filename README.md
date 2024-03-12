@@ -8,16 +8,19 @@ Dependencies:
 
 - pytorch
 
-All the models were trained with the same hyperparameters excluding the tokenizer. The hyperparameters are currently expressed in the main.py file. Cross-entropy loss is used with the AdamW optimizer. The tokenizer and the model were trained on the tiny shakespeare dataset.
+All the models were trained with the same hyperparameters except the vocab_size and the use of the tokenizer. The hyperparameters are expressed in the main.py file. Cross-entropy loss is used with the AdamW optimizer. The tokenizer and the model were trained on the tiny shakespeare dataset.
 
-Model nr.| Nr. of iterations | vocab_size of tokenizer | train loss | validation loss |     sample    |
+Model nr.| Nr. of iterations | tokenizer(vocab_size)   | train loss | validation loss |     sample    |
 |--------|-------------------|-------------------------|------------|-----------------|---------------|
-|1       |3000               |          /              |       1.205|            1.512|[#1](#sample-1)|
-|2       |5000               |          /              |       0.989|            1.624|[#2](#sample-2)|
-|3       |3000               |          500            |       1.305|            3.854|[#3](#sample-3)|
-|4       |3000               |          5000           |       0.439|            8.876|[#4](#sample-4)|
+|1       |3000               |        &cross; (65)     |       1.205|            1.512|[#1](#sample-1)|
+|2       |5000               |        &cross; (65)     |       0.989|            1.624|[#2](#sample-2)|
+|3       |3000               |        &check; 500      |       1.305|            3.854|[#3](#sample-3)|
+|4       |3000               |        &check; 5000     |       0.439|            8.876|[#4](#sample-4)|
 
-We can see that with the addition of the tokenizer the model starts overfitting by quite a bit. The tokenizer decreases the dataset and it's also possible that the model is too complicated for this use case.
+We can see that with the addition of the tokenizer the model starts overfitting by quite a bit and some changes would have to be made.  
+Model 3 had the lowest validation loss at 1500 iterations(train loss: 2.234, val loss: 3.087).  
+Model 4 had the lowest validation loss at 500 iterations(train loss: 4.603, val loss: 5.291).  
+The tokenizer decreases the dataset size and it's also possible that the model is too complex for this use case.
 
 
 # Sample 1
