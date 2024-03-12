@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from model import TransformerDecoder
+from tokenizer import Tokenizer
 import argparse
 
 #hyperparameters
@@ -22,23 +23,31 @@ class Config():
         for k,v in kwargs.items():
             setattr(self, k, v)
 
-def load_data(file):
-    with open(file, 'r') as f:
+def load_data(args):
+    with open(args.file, 'r') as f:
         text = f.read()
     
-    chars = sorted(list(set(text)))
+    if args.tokenizer is not None:
+        tok = Tokenizer()
+        tok.load(args.tokenizer)
+        vocab_size = len(tok.vocab.keys())
+        
+        encode = tok.encode
+        decode = tok.decode
+    else:
+        chars = sorted(list(set(text)))
 
-    vocab_size = len(chars)
+        vocab_size = len(chars)
 
-    stoi = {ch: i for i, ch in enumerate(chars)}
-    itos = {i: ch for i, ch in enumerate(chars)}
+        stoi = {ch: i for i, ch in enumerate(chars)}
+        itos = {i: ch for i, ch in enumerate(chars)}
 
-    encode = lambda s: ([stoi[ch] for ch in s])
-    decode = lambda l: "".join([itos[i] for i in l])
+        encode = lambda s: ([stoi[ch] for ch in s])
+        decode = lambda l: "".join([itos[i] for i in l])
 
-    data = torch.tensor(encode(text))
+    data = torch.tensor(encode(text)) if args.mode == 'train' else None
     
-    return data, vocab_size, stoi, itos, encode, decode
+    return data, vocab_size, encode, decode
 
 def get_batch(data):
     ix = torch.randint(len(data) - block_size, (batch_size, ))
@@ -56,10 +65,11 @@ if __name__ == '__main__':
     parser.add_argument('--ckpt', type=str, default=None, help='checkpoint file')
     parser.add_argument('--file', type=str, default='tiny_shakespeare.txt', help='file to train on')
     parser.add_argument('--save_text', type=str, default='more.txt', help='file to save generated text')
+    parser.add_argument('--tokenizer', type=str, default=None, help='name of the tokenizer to use')
     
     args = parser.parse_args()
 
-    data, vocab_size, stoi, itos, encode, decode = load_data(args.file)
+    data, vocab_size, encode, decode = load_data(args)
 
     config = Config(block_size=block_size, n_embedding=n_embedding, n_head=n_head, n_blocks=n_blocks, dropout=dropout, vocab_size=vocab_size, device=device)
 

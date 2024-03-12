@@ -99,7 +99,7 @@ class TransformerDecoder(nn.Module):
 
     def _init_weights(self, module):
         #small weights so the model is less confidently incorrect about the predictions on the start
-        #random letter selection loss = -ln(1/27) ~ 3.3
+        #random character selection loss = -ln(1/vocab_size)
         if isinstance(module, nn.Linear):
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:

@@ -1,5 +1,5 @@
 # tinyGPT
-PyTorch implementation of GPT(Generative pretrained Transformer)
+PyTorch implementation of GPT(Generative pretrained Transformer) with a BPE tokenizer
 
 
 A thank you to Andrej Karpathy and his great <a href="https://youtu.be/kCc8FmEb1nY">lecture.</a>
@@ -8,9 +8,19 @@ Dependencies:
 
 - pytorch
 
-Sample of the generated text with a model trained on the tiny shakespeare dataset. The model was trained with the hyperparameters that are currently expressed in the main.py file.
-At 3000 iterations the train loss is 1.205 and the validation loss is 1.512. After 3000 iterations the model starts overfitting and the validation loss starts diverging.
+All the models were trained with the same hyperparameters excluding the tokenizer. The hyperparameters are currently expressed in the main.py file. Cross-entropy loss is used with the AdamW optimizer. The tokenizer and the model were trained on the tiny shakespeare dataset.
 
+Model nr.| Nr. of iterations | vocab_size of tokenizer | train loss | validation loss |     sample    |
+|--------|-------------------|-------------------------|------------|-----------------|---------------|
+|1       |3000               |          /              |       1.205|            1.512|[#1](#sample-1)|
+|2       |5000               |          /              |       0.989|            1.624|[#2](#sample-2)|
+|3       |3000               |          500            |       1.305|            3.854|[#3](#sample-3)|
+|4       |3000               |          5000           |       0.439|            8.876|[#4](#sample-4)|
+
+We can see that with the addition of the tokenizer the model starts overfitting by quite a bit. The tokenizer decreases the dataset and it's also possible that the model is too complicated for this use case.
+
+
+# Sample 1
 ```
 FRIAR PHARD S:
 Our earth, then, fiend duked houring that men.
@@ -40,8 +50,8 @@ What cress mild should none of my hand and hem hen;
 But I'll have come into this envy's bowry.
 ```
 
-At the 5000 iteration mark, the training loss goes down to ~0.989, but the validation loss goes up to ~1.624. Sample of the generated text:
 
+# Sample 2
 ```
 LUCIO:
 Gracious pardon, I hope, hark, you both.
@@ -78,4 +88,79 @@ Well, he ha worthy Migorima.
 First Citizen:
 You, sir, my lord.
 
+```
+
+
+# Sample 3
+```
+BENVOLIZABETH:
+Sorrow in my love.
+
+RIVERS:
+So haste, my lord, indeed; and that is so quick,
+She hath been a commission like me long
+That, only am her sestide me now,
+My friends I'll pardon thee.
+
+ROMEO:
+Have still remember, that all good order, that he did
+The heavens, that in the earthwith chequey thou wilt sell,
+Which often had feat that murder him then:
+What bountry Tybalt was for Tewksbury; and then stone,
+Which, take little hath not seen of their tender lover enjared
+Then dove o'er their bies.  Trious Caesby,
+with welcome, those that make them asphans amends
+In a stagger, worth wandering conduct their friends,
+Banish our last!
+The wounds are gone to beat us to them back our spleen;
+For we have thus thus shind together with their hats,
+For they am are the wafter'd, is not yet in another,
+Nor evering to presss'd upon their trees.
+Boasting a prince: farewell
+What news?
+```
+
+
+# Sample 4
+```
+LEONTES:
+On this your sweet request:
+I think it had thought to have done
+Her eye thee, and you might have galled
+Her which so tricks before a trifles.
+
+Servant:
+Nay, but notorious fortune.
+I thought it is coming.
+
+POLIXENES:
+Ay, to have done!
+
+LEONTES:
+He's a nature has a sorrow too sore laid: but I
+Ple time cold gustleboard the yielded
+Of midies up and seizes, the new, from her eye,
+I have ta'en mine 'd you have heard
+Forgent with worthy feeding, limber vows; so dove shin,
+I have deliver'd; but I knew Polixenes
+Is that the pett should so secret and a souls
+Was ever so lives from one infected
+As she thick'd.
+
+LEONTES:
+O, just, her; but she were I but began
+As I sometime knew her!
+Still something has only: 'twere
+Did not marry her being whom
+Are heart to laugh at not to what's sight.
+
+LEONTES:
+But first I might have been,
+That intercession's; now
+Lad me than what I did not dance. kinsmen:
+But thus?
+
+PAULINA:
+Now, too, good lady too: but again,
+I am too much I amads; and would true.
 ```
